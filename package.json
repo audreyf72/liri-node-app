@@ -1,0 +1,24 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "Liri is a language interpretation and Recognition Interface and is a command line node app that takes in parameters and returns data.",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/audreyf72/liri-node-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/audreyf72/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/audreyf72/liri-node-app#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "request": "^2.87.0"
+  }
+}
