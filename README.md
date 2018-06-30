@@ -1,14 +1,14 @@
 
-## Liri Node App
+# Liri Node App
 
-# Requirements
+## Requirements
 
 * Make a Node.js app that depends on user input from the command line
 * Integrate Twitter, Spotify, and OMDb APIs via the appropriate NPM modules
 * Use API calls and parse through returned JSON objects, outputting them in a specified format
 * Read commands and queries from file
 
-# Technologies Used
+## Technologies Used
 
 * Node.js
 * JavaScript
