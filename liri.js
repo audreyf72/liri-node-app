@@ -6,16 +6,41 @@ var keys = require("./keys.js");
 var request = require("request");
 var fs = require("fs");
 
+//Declares the function for each command
+var liri = function(userCommand, dataCommand) {
+    switch (userCommand) {
+        case "my-tweets":
+        getTweets();
+        break;
+
+        case "spotify-this-song":
+        getSpotify(dataCommand);
+        break;
+
+        case "movie-this":
+        getMovie(dataCommand);
+        break;
+
+        case "do-what-it-says":
+        doThis();
+        break;
+
+        default:
+        console.log("Sorry, LIRI doesn't know that one");
+    }
+};
+
+//Spotify
 var spotify = new Spotify(keys.spotify);
 
 var getArtist = function(artist) {
     return artist.name;
 };
 
-//Spotify search
 var getSpotify = function(songName) {
     if (songName === undefined) {
-        songName = "Tangerine";
+        songName = "The Sign",
+        artist = "Ace of Base";
     }
 
     spotify.search(
@@ -43,12 +68,12 @@ var getSpotify = function(songName) {
     );
 };
 
-//Twiiter search
+//Twitter
 var getTweets = function() {
     var client = new Twitter(keys.twitter);
 
     var params = {
-        screen_name: "cnn"
+        screen_name: "AudreysLiri"
     };
     client.get("statuses/user_timeline", params, function(error, tweets, response) {
         if (!error) {
@@ -56,20 +81,21 @@ var getTweets = function() {
                 console.log(tweets[i].created_at);
                 console.log("");
                 console.log(tweets[i].text);
+                console.log("-------------------------------------");
             }
         }
     });
 };
 
-//OMDB Movie search
+//Movies
 var getMovie = function(movieName) {
-    if (movieNmae === undefined) {
-        movieName = "Star Wars";
+    if (movieName === undefined) {
+        movieName = "Mr. Nobody";
     }
 
-    var urlHit = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=full&tomatoes=true&apikey=da7edd3b";
+    var url = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=full&tomatoes=true&apikey=da7edd3b";
 
-    request(urlHit, function(error, response, body) {
+    request(url, function(error, response, body) {
         if (!error && response.statusCode === 200) {
             var jsonData = JSON.parse(body);
 
@@ -82,48 +108,36 @@ var getMovie = function(movieName) {
             console.log("Plot: " + jsonData.Plot);
             console.log("Actors: " + jsonData.Actors);
             console.log("Rotten Tomatoes rating: " + jsonData.Ratings[1].Value);
+            console.log("-------------------------------------");
         }
     });
 };
 
-//Text File Based Command Function
+//Random Text File
 var doThis = function() {
     fs.readFile("random.txt", "utf8", function(error, data) {
         console.log(data);
 
-        var dataArr = data.split(", ");
+        var dataArr = data.split(",");
 
-        if (datArr.length === 2) {
-            pick(dataArr[0], dataArr[1]);
+        if (dataArr.length === 2) {
+            liri(dataArr[0], dataArr[1]);
         }
         else if (dataArr.length === 1) {
-            pick(dataArr[0]);
+            liri(dataArr[0]);
         }
     });
 };
 
-//Determine which command is executed
-var pick = function(caseData, functionData) {
-    switch (caseData) {
-        case "my-tweets":
-        getTweets();
-        break;
-        case "spotify-this-song":
-        getSpotify(functionData);
-        break;
-        case "movie-this":
-        getMovie(functionData);
-        break;
-        case "do-what-it-says":
-        doThis();
-        break;
-        default:
-        console.log("Sorry, LIRI doesn't know that one");
-    }
+//Sets process and action arguments for user input
+var userInput = function(argOne, argTwo) {
+    liri(argOne, argTwo);
 };
 
-var runThis = function(argOne, argTwo) {
-    pick(argOne, argTwo);
-};
+userInput(process.argv[2], process.argv[3]);
 
-runThis(process.argv[2], process.argv[3]);
+var divider =
+    "\n------------------------------------------------------------\n\n";
+
+//fs.appendFile("log.txt", data + divider, function(err) {
+//   if (err) throw err;});
