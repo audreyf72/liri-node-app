@@ -15,6 +15,13 @@
 * Spotify API (via spotify npm module)
 * OMDb API (via request npm module)
 
+## Node Module Requirments
+You'll find these Node packages to run this app
+* Twitter: https://www.npmjs.com/package/twitter
+* Node-Spotify-API: https://www.npmjs.com/package/node-spotify-api
+* Request: https://www.npmjs.com/package/request
+* DotEnv: https://www.npmjs.com/package/dotenv
+
 ## Code Explanation
 
 * Links to authentication keys for Twitter are stored in "keys.js", and we are exporting its contents to the main "liri.js" file.
