@@ -1,5 +1,7 @@
 # Liri Node App
 
+![Alt text](My Movie - Medium.mov)
+
 ## Description
 
 * Liri is a Node.js app that depends on user input from the command line
