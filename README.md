@@ -1,6 +1,6 @@
 # Liri Node App
 
-![Alt text](My Movie - Medium.mov)
+![Alt text](lirimovie.gif)
 
 ## Description
 
