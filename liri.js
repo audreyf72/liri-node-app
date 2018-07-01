@@ -1,3 +1,4 @@
+// Require Node module imports
 require("dotenv").config();
 
 var Twitter = require("twitter");
@@ -33,14 +34,13 @@ var liri = function(userCommand, dataCommand) {
 //Spotify
 var spotify = new Spotify(keys.spotify);
 
-var getArtist = function(artist) {
+var getArtistNames = function(artist) {
     return artist.name;
-};
+  };
 
 var getSpotify = function(songName) {
     if (songName === undefined) {
-        songName = "The Sign",
-        artist = "Ace of Base";
+        songName = "The Sign";
     }
 
     spotify.search(
@@ -57,12 +57,16 @@ var getSpotify = function(songName) {
             var songs = data.tracks.items;
 
             for (var i = 0; i < songs.length; i++) {
-                console.log(i);
-                console.log("artist(s): " + songs[i].artists.map(getArtist));
-                console.log("song name: " + songs[i].name);
-                console.log("preview song: " + songs[i].preview_url);
-                console.log("album: " + songs[i].album.name);
-                console.log("-------------------------------------");
+                var spotifyResults =
+                "--------------------------- " + "Song" + " ------------------------------" + "\r\n" +
+				"Artist: " + songs[i].artists.map(getArtistNames) + "\r\n" +
+				"Song: " + songs[i].name + "\r\n" +
+                "Preview Url: " + songs[i].preview_url + "\r\n" + 
+                "Album the song is from: " + songs[i].album.name + "\r\n" +
+                "----------------------------- " + i + " ------------------------------" + "\r\n" +
+                "";
+				console.log(spotifyResults);
+				log(spotifyResults);//Logs results to log.txt file
             }
         }
     );
@@ -78,10 +82,15 @@ var getTweets = function() {
     client.get("statuses/user_timeline", params, function(error, tweets, response) {
         if (!error) {
             for (var i = 0; i < tweets.length; i++) {
-                console.log(tweets[i].created_at);
-                console.log("");
-                console.log(tweets[i].text);
-                console.log("-------------------------------------");
+                var twitterResults = 
+                "--------------------------- " + "Tweet" + " ------------------------------" + "\r\n" +
+				"@" + tweets[i].user.screen_name + ": " + 
+				tweets[i].created_at + "\r\n" + 
+                tweets[i].text + "\r\n" +
+                "----------------------------- " + i + " ------------------------------" + "\r\n" +
+                "";
+				console.log(twitterResults);
+				log(twitterResults);//Logs results to log.txt file
             }
         }
     });
@@ -99,16 +108,20 @@ var getMovie = function(movieName) {
         if (!error && response.statusCode === 200) {
             var jsonData = JSON.parse(body);
 
-            console.log("Title: " + jsonData.Title);
-            console.log("Year: " + jsonData.Year);
-            console.log("Rated: " + jsonData.Rated);
-            console.log("IMDB Rating: " + jsonData.imdbRating);
-            console.log("Country: " + jsonData.Country);
-            console.log("Language: " + jsonData.Language);
-            console.log("Plot: " + jsonData.Plot);
-            console.log("Actors: " + jsonData.Actors);
-            console.log("Rotten Tomatoes rating: " + jsonData.Ratings[1].Value);
-            console.log("-------------------------------------");
+                var movieResults =
+                "--------------------------- " + "Movie" + " ------------------------------" + "\r\n" +
+                "Title: " + jsonData.Title+"\r\n"+
+                "Year: " + jsonData.Year+"\r\n"+
+                "Imdb Rating: " + jsonData.imdbRating+"\r\n"+
+                "Rotten Tomatoes Rating: " + jsonData.tomatoRating+"\r\n"+
+                "Country: " + jsonData.Country+"\r\n"+
+                "Language: " + jsonData.Language+"\r\n"+
+                "Plot: " + jsonData.Plot+"\r\n"+
+                "Actors: " + jsonData.Actors+"\r\n"+
+                "-----------------------------------------------------------------" + "\r\n" +
+                "";
+                console.log(movieResults);
+                log(movieResults);//Logs results to log.txt file
         }
     });
 };
@@ -120,10 +133,10 @@ var doThis = function() {
 
         var dataArr = data.split(",");
 
-        if (dataArr.length === 2) {
+        if (!error && dataArr.length === 2) {
             liri(dataArr[0], dataArr[1]);
         }
-        else if (dataArr.length === 1) {
+        else if (!error && dataArr.length === 1) {
             liri(dataArr[0]);
         }
     });
@@ -136,8 +149,11 @@ var userInput = function(argOne, argTwo) {
 
 userInput(process.argv[2], process.argv[3]);
 
-var divider =
-    "\n------------------------------------------------------------\n\n";
-
-//fs.appendFile("log.txt", data + divider, function(err) {
-//   if (err) throw err;});
+//Function to log results to log.txt file
+    function log(logResults) {
+        fs.appendFile("log.txt", logResults, (error) => {
+          if(error) {
+            throw error;
+          }
+        });
+      }
