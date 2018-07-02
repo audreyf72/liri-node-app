@@ -8,18 +8,19 @@ var request = require("request");
 var fs = require("fs");
 
 //Declares the function for each command
-var liri = function(userCommand, dataCommand) {
+var liri = function(userCommand, userData) {
+
     switch (userCommand) {
         case "my-tweets":
         getTweets();
         break;
 
         case "spotify-this-song":
-        getSpotify(dataCommand);
+        getSpotify(userData);
         break;
 
         case "movie-this":
-        getMovie(dataCommand);
+        getMovie(userData);
         break;
 
         case "do-what-it-says":
@@ -40,7 +41,7 @@ var getArtistNames = function(artist) {
 
 var getSpotify = function(songName) {
     if (songName === undefined) {
-        songName = "The Sign";
+        songName = "'The Sign'";
     }
 
     spotify.search(
